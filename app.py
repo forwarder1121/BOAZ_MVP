@@ -1,7 +1,7 @@
 import streamlit as st
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 import os
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from typing import Dict, List, TypedDict, Annotated, Literal, Union
 from dotenv import load_dotenv
 
