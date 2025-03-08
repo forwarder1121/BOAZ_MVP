@@ -6,11 +6,11 @@ from typing import Dict, List, TypedDict, Annotated, Literal, Union
 from dotenv import load_dotenv
 
 # API 키 설정 (로컬과 Streamlit Cloud 환경 모두 지원)
-# 로컬 환경에서는 .env 파일 사용
 load_dotenv()
 
-# Streamlit Cloud에서는 st.secrets 사용, 로컬에서는 환경 변수 사용
-api_key = st.secrets["OPENAI_API_KEY"] if "OPENAI_API_KEY" in st.secrets else os.getenv("OPENAI_API_KEY")
+# 환경 변수 직접 설정 (Streamlit Cloud에서 사용)
+if "OPENAI_API_KEY" in st.secrets:
+    os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 
 # 감정 단어 리스트
 negative_emotions = ["화나", "슬프", "속상", "우울", "불안", "걱정", "짜증", "힘들"]
@@ -20,8 +20,8 @@ positive_emotions = ["기쁘", "행복", "즐겁", "신나", "설레", "좋아",
 st.set_page_config(page_title="ChaCha - 아이들을 위한 감정 대화 챗봇", page_icon="🤖")
 st.title("ChaCha와 대화하기 🤖")
 
-# OpenAI API 키 설정
-llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.7, openai_api_key=api_key)
+# OpenAI API 키 설정 - API 키 매개변수 없이 초기화
+llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.7)
 
 # 대화 상태 관리 (LangGraph 없이)
 if "messages" not in st.session_state:
